@@ -1,0 +1,188 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv='content-type' content='text/html; charset=utf-8'>
+  
+    <title>Picture Matcher</title>
+    <script src='resemble.js'></script>
+    <script src='main.js'></script>
+    <link href='https://cdn.muicss.com/mui-0.9.35/css/mui.css' rel='stylesheet' type='text/css' />
+    <script src='https://cdn.muicss.com/mui-0.9.35/js/mui.js'></script>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+    <link rel='stylesheet' href='style.css'>
+  </head>
+  <body>
+    <header class='mui-appbar'>
+      <h1>Picture Matcher</h1>
+      <button id='openInfoButton'>i</button>
+    </header>
+    <main class='mui-container'>
+      <section class='mui-container'>
+        <input type='file' id='mainImage'>
+        <button id='fileButton' class='mui-btn mui-btn--primary'>Load an image</button>
+        <div>
+          <img id='preview' src='https://www.kilombo.co.il/SVTemplate/img/icon-img-placeholder.svg'>
+          <div class='mui-textfield mui-textfield--float-label'>
+            <input type='text' id='urlsToCompare'>
+            <label>URLs of images</label>
+          </div>
+          <button id='compare' class='mui-btn mui-btn--primary'>Compare</button>
+        </div>
+      </section>
+      <div class='mui-divider'></div>
+      <section>
+        <img id='imageMatch' src='https://www.kilombo.co.il/SVTemplate/img/icon-img-placeholder.svg'>
+        <a id='imageMatchText'>Waiting for comparison</a>
+      </section>
+    </main>
+    <div class='overlay spinner'>
+      <svg version='1.1' id='loader-1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px'
+           width='40px' height='40px' viewBox='0 0 50 50' style='enable-background:new 0 0 50 50;' xml:space='preserve'>
+        <path fill='#000' d='M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z'>
+          <animateTransform attributeType='xml'
+            attributeName='transform'
+            type='rotate'
+            from='0 25 25'
+            to='360 25 25'
+            dur='0.8s'
+            repeatCount='indefinite'/>
+        </path>
+      </svg>
+    </div>
+    <div class='overlay info'>
+      <div>
+        <h2>How to get Facebook friend profile URLs</h2>
+        <ul>
+          <li>Copy the code below</li>
+          <li>Open the desired Facebook friends list</li>
+          <li>Open the developer console:</li>
+          <ul>
+            <li>Chrome: Ctrl/Cmd + Shift/Opt + J</li>
+            <li>Firefox: Ctrl/Cmd + Shift/Opt + K</li>
+          </ul>
+          <li>Paste the code and hit enter</li>
+        </ul>
+        <div>
+          <code id='code-block' class='prettyprint lang-javascript'>function loadAll(counter=0) {
+  if ( window.scrollY < Number(getComputedStyle( document.body ).height.slice(0,-2)) - window.innerHeight ) {
+      window.scrollBy(0,1000)
+      counter = 0
+  }
+  if ( counter < 10 ) {
+    setTimeout( () => loadAll( counter+1 ), 500 )
+  } else {
+    const copy = document.createElement('button')
+    copy.innerText = 'Copy URLs'
+    copy.style.position = 'fixed'
+    copy.style.left = '50%'
+    copy.style.top = '50%'
+    copy.style.transform = 'translate(-50%,-50%)'
+    copy.style.padding = '1rem 2rem'
+    copy.style.fontFamily = 'Roboto, Arial, sans-serif'
+    copy.style.fontSize = '1.25rem'
+    copy.style.color = 'white'
+    copy.style.backgroundColor = '#3498db'
+    copy.style.border = '0'
+    copy.style.borderRadius = '0.05rem'
+    copy.style.boxShadow = '0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)'
+    copy.style.cursor = 'pointer'
+    copy.addEventListener('click', () => {
+      const urls = Array.from(document.querySelectorAll('ul > li > div > a > img')).map(el=>el.src).join(','),
+            textarea = document.createElement('textarea')
+      textarea.value = urls
+      textarea.style.position = 'fixed'
+      textarea.style.opacity = '0'
+      document.body.appendChild(textarea)
+      textarea.select()
+      const result = document.execCommand('copy')
+      if ( ( !result && !confirm( `Couldn't copy, try again?` ) ) || result ) {
+        document.body.removeChild(textarea)
+        document.body.removeChild(copy)
+        
+        const form = document.createElement( 'div' ),
+              label = document.createElement( 'label' ),
+              input = document.createElement( 'input' ),
+              button = document.createElement( 'button' )
+        
+        form.style.position = 'fixed'
+        form.style.left = '50%'
+        form.style.top = '50%'
+        form.style.transform = 'translate(-50%,-50%)'
+        form.style.backgroundColor = '#fafafa'
+        form.style.boxShadow = '0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)'
+        form.style.borderRadius = '0.05rem'
+        form.style.display = 'flex'
+        form.style.flexDirection = 'column'
+        form.style.alignItems = 'center'
+        form.style.padding = '1rem 2rem'
+        
+        label.style.fontFamily = 'Roboto'
+        label.style.color = '#222'
+        label.style.fontSize = '1rem'
+        label.style.textAlign = 'left'
+        label.style.width = '100%'
+        label.innerText = 'Enter the URL of the picture you found:'
+        
+        input.style.backgroundColor = 'white'
+        input.style.width = '75vw'
+        input.style.maxWidth = '20rem'
+        input.style.padding = '1rem'
+        input.style.fontSize = '0.8rem'
+        input.setAttribute( 'placeHolder', 'https://example.com' )
+        
+        button.style.backgroundColor = '#3498db'
+        button.style.color = 'white'
+        button.style.borderRadius = '0.05rem'
+        button.style.width = '100%'
+        button.style.padding = '0.5rem 0'
+        button.style.border = 'none'
+        button.style.margin = '0.5rem 0.5rem 0'
+        button.style.cursor = 'pointer'
+        button.style.fontFamily = 'Roboto'
+        button.style.fontSize = '0.9rem'
+        button.style.fontWeight = '700'
+        button.innerText = 'SUBMIT'
+        
+        button.addEventListener( 'click', () => {
+          const success = getProfileFromURL( input.value )
+          
+          input.value = ''
+          
+          if ( ( !success && !confirm( 'There are no profile pictures that match this url, would you like to try again?' ) ) || success ) {
+            document.body.removeChild( form )
+          }
+        })
+        
+        form.appendChild( label )
+        form.appendChild( input )
+        form.appendChild( button )
+        document.body.appendChild( form )
+      }
+    })
+    document.body.appendChild(copy)
+  }
+}
+
+function getProfileFromURL( url ) {
+  const match = Array.from(document.querySelectorAll('ul > li > div > a > img'))
+    .reduce( ( match, next ) => next.src === url ? next : match, null )
+  
+  if ( match === null )
+    return false
+  
+  match.parentElement.click()
+  return true
+}
+
+loadAll()</code>
+          <button id='copyCodeButton'>
+            <svg aria-hidden="true" class="octicon octicon-clippy" height="16" version="1.1" viewBox="0 0 14 16" width="14">
+              <path fill-rule="evenodd" d="M2 13h4v1H2v-1zm5-6H2v1h5V7zm2 3V8l-3 3 3 3v-2h5v-2H9zM4.5 9H2v1h2.5V9zM2 12h2.5v-1H2v1zm9 1h1v2c-.02.28-.11.52-.3.7-.19.18-.42.28-.7.3H1c-.55 0-1-.45-1-1V4c0-.55.45-1 1-1h3c0-1.11.89-2 2-2 1.11 0 2 .89 2 2h3c.55 0 1 .45 1 1v5h-1V6H1v9h10v-2zM2 5h8c0-.55-.45-1-1-1H8c-.55 0-1-.45-1-1s-.45-1-1-1-1 .45-1 1-.45 1-1 1H3c-.55 0-1 .45-1 1z"></path>
+            </svg>
+          </button>
+        </div>
+        <button class='exit' id='closeInfoButton'></button>
+      </div>
+    </div>
+  </body>
+</html>

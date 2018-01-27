@@ -1,0 +1,213 @@
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+main {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: center;
+}
+
+section {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  min-height: 30vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+section > input[type=file] {
+  display: none;
+}
+
+section > input[type=file] ~ div {
+  display: none;
+}
+
+section > input[type=file].valid ~ div {
+  display: flex;
+}
+
+section > input[type=file].valid + button {
+  display: none;
+}
+
+section > div {
+  flex-direction: column;
+}
+
+section > div > img {
+  width: 15rem;
+  height: 15rem;
+  margin: 0 auto 4rem;
+  border-radius: 5%;
+}
+
+section > img {
+  width: 15rem;
+  height: 15rem;
+  border-radius: 5%;
+}
+
+section > a {
+  font-size: 1.5rem;
+  font-family: Verdana;
+  text-align: center;
+  transform: translateY(2rem);
+}
+
+svg path,
+svg rect {
+  fill: #2196F3;
+}
+
+header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+header > h1 {
+  font-size: 2.5rem;
+  margin: 0 0 0 2rem;
+  font-family: Roboto;
+}
+
+header > button {
+  margin-left: auto;
+  margin-right: 4rem;
+  background: #0000; 
+  border: 1px solid #fff;
+  border-radius: 100%;
+  width: 3rem;
+  height: 3rem;
+  color: #fff; 
+  font-size: 2rem;
+  font-family: Times New Roman;
+  font-weight: 600;
+  transition: background-color 0.2s, color 0.2s;
+  cursor: pointer;
+}
+
+header > button:hover {
+  background-color: #fff;
+  color: #2196F3;
+}
+
+header > button:focus {
+  outline: none;
+}
+
+.overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0009;
+  transition: opacity 0.3s ease-in-out, visibility 0s 0.3s, height 0s 0.3s;
+  opacity: 0;
+  visibility: hidden;
+  height: 0;
+  position: absolute;
+  top: 0;
+  height: 100%;
+  left: 0;
+  right: 0;
+  padding: 0;
+}
+
+.overlay#mui-overlay {
+  transition: opacity 0.3s ease-in-out, visibility 0s 0s, height 0s 0s;
+  opacity: 1;
+  visibility: visible;
+}
+
+.info {
+  flex-direction: column;
+}
+
+.info > div {
+  background-color: white;
+  width: 80vw;
+  padding: 1rem 2rem;
+  margin: auto;
+  overflow: auto;
+  height: 90vh;
+  border-radius: 0.25rem;
+  position: relative;
+}
+
+.info > div > div {
+  background-color: #EFF0F1;
+  overflow: auto;
+  position: relative;
+  border-radius: 0.25rem;
+  padding-left: 0.5rem;
+}
+
+.info > div > div > code {
+  white-space: pre;
+  overflow: auto;
+  width: 60rem;
+  height: 50rem;
+  background-color: #EFF0F1;
+}
+
+#copyCodeButton {
+  position: absolute;
+  right: 0;
+  top: 0;
+  text-align: center;
+  background-color: transparent;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  border-radius: 0 0.25rem;
+  border: none;
+  font-weight: 700;
+  transition: filter 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+#copyCodeButton > svg > path {
+  fill: black;
+}
+
+#copyCodeButton:hover {
+  background-color: #eee;
+  filter: brightness(90%);
+}
+
+.exit {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 1rem;
+}
+
+.exit::before, .exit::after {
+  content: ' ';
+  width: 1.5rem;
+  height: 2px;
+  background-color: LightGrey;
+  transform: rotate(45deg);
+  position: absolute;
+  border-radius: 10px;
+  top: 0.95rem;
+  left: calc(50% - 0.75rem);
+  transition: background-color 0.2s ease-in-out;
+}
+
+.exit::after {
+  transform: rotate(-45deg);
+}
+
+.exit:hover::before, .exit:hover::after {
+  background-color: #222;
+}
